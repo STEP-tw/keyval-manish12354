@@ -1,7 +1,6 @@
 const src=function(filePath){return "../src/"+filePath};
 const errors=function(filePath){return "../src/errors/"+filePath};
 const assert = require('chai').assert;
-// const assert=require('assert');
 const Parser=require(src('index.js')).Parser;
 const MissingValueError=require(errors('missingValueError.js'));
 const MissingEndQuoteError=require(errors('missingEndQuoteError.js'));
@@ -30,7 +29,6 @@ describe("parse basic key values",function(){
   it("parse when there are leading spaces before key",function(){
     let actual=kvParser.parse(" key=value");
     let expected = {'key':'value'};
-    // console.log(kvParser.parse(" key=value"));
     assert.deepOwnInclude(expected,kvParser.parse(" key=value"));
   });
 
@@ -173,7 +171,7 @@ describe("multiple values with quotes",function(){
 describe("mixed values with both quotes and without",function(){
   it("parse simple values with and without quotes",function(){
     let expected={key:"value",anotherkey:"anothervalue"};
-    console.log(kvParser.parse("key=value anotherkey=\"anothervalue\""));
+    // console.log(kvParser.parse("key=value anotherkey=\"anothervalue\""));
     assert.deepOwnInclude(expected,kvParser.parse("key=value anotherkey=\"anothervalue\""));
   });
 
@@ -218,9 +216,9 @@ describe("error handling",function(){
         assert.fail();
       }
     } catch (e) {
-      assert.ok(errorChecker("key",3,MissingValueError)(e))
+      assert.ok(errorChecker("key",3,MissingValueError)(e));
     }
-  })
+  });
 
   it("throws error on missing value when value is quoted",function(){
     try {
@@ -245,6 +243,7 @@ describe("error handling",function(){
       var p=kvParser.parse("'foo'=value");
       assert.fail();
     } catch (e) {
+      // console.log(e.message);
       assert.ok(errorChecker(undefined,0,MissingKeyError)(e));
     }
   });
@@ -266,5 +265,4 @@ describe("error handling",function(){
       assert.ok(errorChecker(undefined,2,IncompleteKeyValuePairError)(e));
     }
   });
-
 });
