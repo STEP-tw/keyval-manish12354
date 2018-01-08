@@ -214,7 +214,8 @@ describe("error handling",function(){
   it("throws error on missing value when value is unquoted",function(){
     try {
       () => {
-        kvParser.parse("key=")
+        kvParser.parse("key=");
+        assert.fail();
       }
     } catch (e) {
       assert.ok(errorChecker("key",3,MissingValueError)(e))
@@ -224,6 +225,7 @@ describe("error handling",function(){
   it("throws error on missing value when value is quoted",function(){
     try {
        kvParser.parse("key=\"value");
+       assert.fail();
     } catch (e) {
       assert.ok(errorChecker("key",9,MissingEndQuoteError)(e));
     }
@@ -232,6 +234,7 @@ describe("error handling",function(){
   it("throws error on missing key",function(){
     try {
       var p=kvParser.parse("=value");
+      assert.fail();
     } catch (e) {
       assert.ok(errorChecker(undefined,0,MissingKeyError)(e));
     }
@@ -240,6 +243,7 @@ describe("error handling",function(){
   it("throws error on invalid key",function(){
     try {
       var p=kvParser.parse("'foo'=value");
+      assert.fail();
     } catch (e) {
       assert.ok(errorChecker(undefined,0,MissingKeyError)(e));
     }
@@ -248,6 +252,7 @@ describe("error handling",function(){
   it("throws error on missing assignment operator",function(){
     try {
       var p=kvParser.parse("key value");
+      assert.fail();
     } catch (e) {
       assert.ok(errorChecker(undefined,4,MissingAssignmentOperatorError)(e));
     }
@@ -256,6 +261,7 @@ describe("error handling",function(){
   it("throws error on incomplete key value pair",function(){
     try {
       var p=kvParser.parse("key");
+      assert.fail();
     } catch (e) {
       assert.ok(errorChecker(undefined,2,IncompleteKeyValuePairError)(e));
     }
